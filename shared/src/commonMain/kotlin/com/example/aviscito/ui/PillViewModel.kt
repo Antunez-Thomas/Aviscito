@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class PillViewModel(
     private val repo: PillRepository
 ): ViewModel() {
-    val pills: StateFlow<List<PillEntity>> = repo.getPendingPills()
+    val pills: StateFlow<List<PillEntity>> = repo.getAllPills()
        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
     fun addPill(name: String, frequency: String, time: String) {
         viewModelScope.launch { repo.addPill(name, frequency, time) }

@@ -22,4 +22,7 @@ interface PillDao {
 
     @Query("SELECT * FROM pills WHERE takenAt IS NULL ORDER BY takenAt ASC")
     fun getPendingPills(): Flow<List<PillEntity>>
+
+     @Query("SELECT * FROM pills ORDER BY time ASC")
+     fun getAllPills(): Flow<List<PillEntity>>
 }

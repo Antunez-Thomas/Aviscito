@@ -18,4 +18,5 @@ class PillRepository(private val dao: PillDao) {
     suspend fun markAsNotTaken(id: Long) {
         dao.markAsNotTaken(id)
     }
+    fun getAllPills(): Flow<List<PillEntity>> = dao.getAllPills()
 }

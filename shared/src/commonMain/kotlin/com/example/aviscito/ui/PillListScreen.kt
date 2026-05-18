@@ -13,11 +13,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import aviscito.shared.generated.resources.Res
 import org.jetbrains.compose.resources.painterResource
 import aviscito.shared.generated.resources.ic_add
 
+@Preview(showBackground = true)
 @Composable
 fun PillListScreen(viewModel: PillViewModel = koinInject()){
    val pills by viewModel.pills.collectAsState()
