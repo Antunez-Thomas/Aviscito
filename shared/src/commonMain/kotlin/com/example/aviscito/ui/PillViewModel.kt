@@ -21,7 +21,7 @@ class PillViewModel(
     fun markAsTaken(id: Long) {
         viewModelScope.launch { repo.markAsTaken(id) }
     }
-    fun markAsNonTaken(id: Long) {
+    fun markAsNotTaken(id: Long) {
         viewModelScope.launch { repo.markAsNotTaken(id) }
     }
 }

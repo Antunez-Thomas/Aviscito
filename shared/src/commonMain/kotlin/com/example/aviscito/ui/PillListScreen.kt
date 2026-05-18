@@ -30,12 +30,13 @@ fun PillListScreen(viewModel: PillViewModel = koinInject()){
          }
       }
    ) { padding ->
-      LazyColumn(modifer = Modifier.padding(padding)) {
+      LazyColumn(modifier = Modifier.padding(padding)) {
          items(pills) { pill ->
             PillRow(pill, viewModel)
          }
       }
    }
+
    if (showDialog) {
       AddPillDialog(
          onDismiss = { showDialog = false },
