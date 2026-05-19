@@ -20,29 +20,40 @@ import org.jetbrains.compose.resources.painterResource
 import aviscito.shared.generated.resources.ic_add
 
 @Composable
-fun PillListScreen(viewModel: PillViewModel = koinInject()){
-   val pills by viewModel.pills.collectAsState()
+fun PillListScreen(viewModel: PillViewModel = koinInject()) {
+   val state by viewModel.state.collectAsState()
    var showDialog by remember { mutableStateOf(false) }
 
-   Scaffold(
-      floatingActionButton = {
-         FloatingActionButton(onClick = { showDialog = true }) {
-            Icon(painter = painterResource(Res.drawable.ic_add), contentDescription = null)
-         }
-      }
-   ) { padding ->
-      LazyColumn(modifier = Modifier.padding(padding)) {
-         items(pills) { pill ->
-            PillRow(pill, viewModel)
+   PillListScreen(
+      state = state,
+      onEvent = viewModel::handleEvent,
+      showDialog = showDialog,
+      onShowDialogChange = { showDialog = it }
+   )
+}
+
+@Preview
+@Composable
+fun PillListScreen(
+   state: PillUiState,
+   onEvent: (PillUIEvent) -> Unit,
+   showDialog: Boolean,
+   onShowDialogChange: (Boolean) -> Unit
+) {
+   Scaffold() {
+      LazyColumn {
+         items(state.pills) { pill ->
+            PillRow(pill, onEvent)
          }
       }
    }
 
    if (showDialog) {
       AddPillDialog(
-         onDismiss = { showDialog = false },
+         onDismiss = { onShowDialogChange(false) },
          onSave = { name, frequency, time ->
-            viewModel.addPill(name, frequency, time)
+            onEvent(PillUIEvent.AddPill(name, frequency, time))
+            onShowDialogChange(false)
          }
       )
    }

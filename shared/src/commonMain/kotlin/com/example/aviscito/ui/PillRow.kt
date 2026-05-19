@@ -14,12 +14,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.example.aviscito.data.PillEntity
 
 @Composable
-fun PillRow(pill: PillEntity, viewModel: PillViewModel) {
+fun PillRow(pill: PillEntity, onEvent: (PillUIEvent) -> Unit) {
    val isTaken = pill.takenAt != null
 
     Card(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
@@ -46,8 +45,8 @@ fun PillRow(pill: PillEntity, viewModel: PillViewModel) {
                 }
             }
             Button(onClick = {
-                if (isTaken) viewModel.markAsNotTaken(pill.id)
-                else viewModel.markAsTaken(pill.id)
+                if (isTaken) onEvent(PillUIEvent.MarkAsNotTaken(pill.id))
+                else onEvent(PillUIEvent.MarkAsTaken(pill.id))
             }) {
                 Text(if(isTaken) "Undo" else "Take")
             }
