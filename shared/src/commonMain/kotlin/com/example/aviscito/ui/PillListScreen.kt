@@ -19,7 +19,6 @@ import aviscito.shared.generated.resources.Res
 import org.jetbrains.compose.resources.painterResource
 import aviscito.shared.generated.resources.ic_add
 
-@Preview(showBackground = true)
 @Composable
 fun PillListScreen(viewModel: PillViewModel = koinInject()){
    val pills by viewModel.pills.collectAsState()
