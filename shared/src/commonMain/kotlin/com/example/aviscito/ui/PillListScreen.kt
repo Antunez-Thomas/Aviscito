@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -66,7 +67,12 @@ fun PillListScreenContent(
                Text("Error: ${state.error}", modifier = Modifier.align(Alignment.Center))
             }
             state.pills.isEmpty() -> {
-               Text("No pills yet. Tap + to add one.", modifier = Modifier.align(Alignment.Center))
+               Text(
+                  "No pills yet. Tap + to add one.",
+                  modifier = Modifier.align(Alignment.Center),
+                  style = MaterialTheme.typography.bodyLarge,
+                  color = MaterialTheme.colorScheme.onSurfaceVariant
+               )
             }
             else -> {
                LazyColumn {
