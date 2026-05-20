@@ -1,19 +1,23 @@
 package com.example.aviscito.ui
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import aviscito.shared.generated.resources.Res
@@ -50,9 +54,27 @@ fun PillListScreenContent(
          }
       }
    ) { padding ->
-      LazyColumn(modifier = Modifier.padding(padding)) {
-         items(state.pills) { pill ->
-            PillRow(pill, onEvent)
+      Box(modifier = Modifier
+         .padding(padding)
+         .fillMaxSize()
+      ) {
+         when {
+            state.isLoading -> {
+               CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+            state.error != null -> {
+               Text("Error: ${state.error}", modifier = Modifier.align(Alignment.Center))
+            }
+            state.pills.isEmpty() -> {
+               Text("No pills yet. Tap + to add one.", modifier = Modifier.align(Alignment.Center))
+            }
+            else -> {
+               LazyColumn {
+                  items(state.pills) { pill ->
+                     PillRow(pill, onEvent)
+                  }
+               }
+            }
          }
       }
    }
