@@ -20,7 +20,7 @@ interface PillDao {
     @Query("UPDATE pills SET takenAt = NULL WHERE id = :id")
     suspend fun markAsNotTaken(id: Long)
 
-    @Query("SELECT * FROM pills WHERE takenAt IS NULL ORDER BY takenAt ASC")
+    @Query("SELECT * FROM pills WHERE takenAt IS NULL ORDER BY time ASC")
     fun getPendingPills(): Flow<List<PillEntity>>
 
      @Query("SELECT * FROM pills ORDER BY time ASC")

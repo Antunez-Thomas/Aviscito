@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 import aviscito.shared.generated.resources.Res
@@ -39,7 +40,16 @@ fun PillListScreenContent(
    showDialog: Boolean,
    onShowDialogChange: (Boolean) -> Unit
 ) {
-   Scaffold { padding ->
+   Scaffold(
+      floatingActionButton = {
+         FloatingActionButton(onClick = { onShowDialogChange(true) }) {
+            Icon(
+               painter = painterResource(Res.drawable.ic_add),
+               contentDescription = "Add Pill",
+            )
+         }
+      }
+   ) { padding ->
       LazyColumn(modifier = Modifier.padding(padding)) {
          items(state.pills) { pill ->
             PillRow(pill, onEvent)
