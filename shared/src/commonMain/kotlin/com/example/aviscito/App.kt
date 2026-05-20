@@ -1,9 +1,12 @@
 package com.example.aviscito
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.example.aviscito.di.appModule
-import com.example.aviscito.ui.PillListScreen
+import com.example.aviscito.navigation.NavigationRoot
 import org.koin.compose.KoinApplication
 import org.koin.dsl.koinConfiguration
 
@@ -11,7 +14,12 @@ import org.koin.dsl.koinConfiguration
 fun App() {
      KoinApplication(configuration = koinConfiguration { modules(appModule) }) {
         MaterialTheme {
-            PillListScreen()
+            Scaffold { innerPadding ->
+                NavigationRoot(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                )
+            }
         }
     }
 }

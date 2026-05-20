@@ -1,4 +1,4 @@
-package com.example.aviscito.ui
+package com.example.aviscito.features.pilltracker
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

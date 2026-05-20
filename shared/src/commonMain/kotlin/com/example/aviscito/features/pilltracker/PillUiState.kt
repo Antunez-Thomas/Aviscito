@@ -1,4 +1,4 @@
-package com.example.aviscito.ui
+package com.example.aviscito.features.pilltracker
 
 import com.example.aviscito.data.PillEntity
 

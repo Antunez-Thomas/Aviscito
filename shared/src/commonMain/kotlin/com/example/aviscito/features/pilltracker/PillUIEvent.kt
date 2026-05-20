@@ -1,4 +1,4 @@
-package com.example.aviscito.ui
+package com.example.aviscito.features.pilltracker
 
 sealed interface PillUIEvent {
     data class AddPill(val name: String, val frequency: String, val time: String) : PillUIEvent
