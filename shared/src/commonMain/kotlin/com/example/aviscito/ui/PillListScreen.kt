@@ -24,7 +24,7 @@ fun PillListScreen(viewModel: PillViewModel = koinInject()) {
    val state by viewModel.state.collectAsState()
    var showDialog by remember { mutableStateOf(false) }
 
-   PillListScreen(
+   PillListScreenContent(
       state = state,
       onEvent = viewModel::handleEvent,
       showDialog = showDialog,
@@ -32,16 +32,15 @@ fun PillListScreen(viewModel: PillViewModel = koinInject()) {
    )
 }
 
-@Preview
 @Composable
-fun PillListScreen(
+fun PillListScreenContent(
    state: PillUiState,
    onEvent: (PillUIEvent) -> Unit,
    showDialog: Boolean,
    onShowDialogChange: (Boolean) -> Unit
 ) {
-   Scaffold() {
-      LazyColumn {
+   Scaffold { padding ->
+      LazyColumn(modifier = Modifier.padding(padding)) {
          items(state.pills) { pill ->
             PillRow(pill, onEvent)
          }
@@ -57,4 +56,14 @@ fun PillListScreen(
          }
       )
    }
+}
+@Preview
+@Composable
+private fun PillListScreenPreview() {
+   PillListScreenContent(
+      state = PillUiState(),
+      onEvent = {},
+      showDialog = false,
+      onShowDialogChange = {}
+   )
 }
