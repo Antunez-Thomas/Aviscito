@@ -8,9 +8,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -20,13 +22,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import compose.icons.FeatherIcons
+import compose.icons.feathericons.ArrowLeft
+import compose.icons.feathericons.Plus
 import org.koin.compose.koinInject
-import aviscito.shared.generated.resources.Res
-import org.jetbrains.compose.resources.painterResource
-import aviscito.shared.generated.resources.ic_add
 
 @Composable
-fun PillListScreen(viewModel: PillViewModel = koinInject()) {
+fun PillListScreen(
+   viewModel: PillViewModel = koinInject(),
+   goHome: () -> Unit = {}
+) {
    val state by viewModel.state.collectAsState()
    var showDialog by remember { mutableStateOf(false) }
 
@@ -34,7 +39,8 @@ fun PillListScreen(viewModel: PillViewModel = koinInject()) {
       state = state,
       onEvent = viewModel::handleEvent,
       showDialog = showDialog,
-      onShowDialogChange = { showDialog = it }
+      onShowDialogChange = { showDialog = it },
+      goHome = goHome
    )
 }
 
@@ -43,16 +49,30 @@ fun PillListScreenContent(
    state: PillUiState,
    onEvent: (PillUIEvent) -> Unit,
    showDialog: Boolean,
-   onShowDialogChange: (Boolean) -> Unit
+   onShowDialogChange: (Boolean) -> Unit,
+   goHome: () -> Unit = {}
 ) {
    Scaffold(
       floatingActionButton = {
          FloatingActionButton(onClick = { onShowDialogChange(true) }) {
             Icon(
-               painter = painterResource(Res.drawable.ic_add),
+               imageVector = FeatherIcons.Plus,
                contentDescription = "Add Pill",
             )
          }
+      },
+      topBar = {
+         TopAppBar(
+            title = { Text(text = "Pill List") },
+            navigationIcon = {
+               IconButton(onClick = { goHome() }) {
+                  Icon(
+                     imageVector = FeatherIcons.ArrowLeft,
+                     contentDescription = "Back"
+                  )
+               }
+            }
+         )
       }
    ) { padding ->
       Box(modifier = Modifier
@@ -102,6 +122,7 @@ private fun PillListScreenPreview() {
       state = PillUiState(),
       onEvent = {},
       showDialog = false,
-      onShowDialogChange = {}
+      onShowDialogChange = {},
+      goHome = {}
    )
 }
