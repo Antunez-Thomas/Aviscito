@@ -9,6 +9,6 @@ data class PillEntity(
     val id: Long = 0,
     val name: String,
     val frequency: String,
-    val time: String,
+    val time: Int,
     val takenAt: Long? = null
 )

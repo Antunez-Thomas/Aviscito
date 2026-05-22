@@ -24,7 +24,7 @@ class PillViewModel(private val repository: PillRepository): ViewModel() {
         }
     }
 
-    private fun addPill(name: String, frequency: String, time: String) {
+    private fun addPill(name: String, frequency: String, time: Int) {
         viewModelScope.launch {
             repository.addPill(name, frequency, time)
         }

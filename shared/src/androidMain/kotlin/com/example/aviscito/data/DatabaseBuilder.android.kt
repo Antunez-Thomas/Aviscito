@@ -9,5 +9,5 @@ actual fun getDatabaseBuilder(): RoomDatabase.Builder<AppDatabase> {
         AndroidApp.context,
         AppDatabase::class.java,
         "pills.db"
-    )
+    ).fallbackToDestructiveMigration(true)
 }

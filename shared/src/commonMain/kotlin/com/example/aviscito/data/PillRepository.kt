@@ -9,7 +9,7 @@ class PillRepository(private val dao: PillDao) {
 
     suspend fun getPIllById(id: Long): PillEntity? = dao.getPillById(id)
 
-    suspend fun addPill(name: String, frequency: String, time: String) {
+    suspend fun addPill(name: String, frequency: String, time: Int) {
        dao.insert(PillEntity(name = name, frequency = frequency, time = time))
     }
     suspend fun markAsTaken(id: Long) {

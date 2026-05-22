@@ -10,4 +10,5 @@ actual fun getDatabaseBuilder(): RoomDatabase.Builder<AppDatabase> {
     dbFile.parentFile.mkdirs()
     return Room.databaseBuilder<AppDatabase>(name = dbFile.absolutePath)
         .setDriver(BundledSQLiteDriver())
+        .fallbackToDestructiveMigration(true)
 }

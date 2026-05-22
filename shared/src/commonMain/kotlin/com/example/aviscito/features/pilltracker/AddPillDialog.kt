@@ -41,12 +41,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.aviscito.data.timeToMinutes
 import kotlin.math.roundToInt
 
 @Composable
 fun AddPillDialog(
     onDismiss: () -> Unit,
-    onSave: (name: String, frequency: String, time: String) -> Unit,
+    onSave: (name: String, frequency: String, time: Int) -> Unit,
 ) {
     var name by rememberSaveable { mutableStateOf("") }
     var frequency by rememberSaveable { mutableStateOf("") }
@@ -104,7 +105,7 @@ fun AddPillDialog(
         confirmButton = {
             TextButton(onClick = {
                 if (name.isNotBlank()) {
-                    onSave(name, frequency, displayTime)
+                    onSave(name, frequency, timeToMinutes(selectedHour, selectedMinute, isAM))
                     onDismiss()
                 }
             }) { Text("Save") }
