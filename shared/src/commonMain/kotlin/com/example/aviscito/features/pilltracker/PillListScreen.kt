@@ -30,7 +30,7 @@ import org.koin.compose.koinInject
 @Composable
 fun PillListScreen(
    viewModel: PillViewModel = koinInject(),
-   goHome: () -> Unit = {}
+   onNavigateBack: () -> Unit = {}
 ) {
    val state by viewModel.state.collectAsState()
    var showDialog by remember { mutableStateOf(false) }
@@ -40,7 +40,7 @@ fun PillListScreen(
       onEvent = viewModel::handleEvent,
       showDialog = showDialog,
       onShowDialogChange = { showDialog = it },
-      goHome = goHome
+      onNavigateBack = onNavigateBack
    )
 }
 
@@ -50,7 +50,7 @@ fun PillListScreenContent(
    onEvent: (PillUIEvent) -> Unit,
    showDialog: Boolean,
    onShowDialogChange: (Boolean) -> Unit,
-   goHome: () -> Unit = {}
+   onNavigateBack: () -> Unit = {}
 ) {
    Scaffold(
       floatingActionButton = {
@@ -65,7 +65,7 @@ fun PillListScreenContent(
          TopAppBar(
             title = { Text(text = "Pill List") },
             navigationIcon = {
-               IconButton(onClick = { goHome() }) {
+               IconButton(onClick = { onNavigateBack() }) {
                   Icon(
                      imageVector = FeatherIcons.ArrowLeft,
                      contentDescription = "Back"
@@ -123,6 +123,6 @@ private fun PillListScreenPreview() {
       onEvent = {},
       showDialog = false,
       onShowDialogChange = {},
-      goHome = {}
+      onNavigateBack = {}
    )
 }
