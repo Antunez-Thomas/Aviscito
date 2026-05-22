@@ -1,6 +1,8 @@
 package com.example.aviscito.features.pilltracker
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,7 +10,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
@@ -18,6 +24,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +33,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlin.math.roundToInt
 
 @Composable
 fun AddPillDialog(
@@ -209,6 +224,10 @@ private fun NumberPicker(
     onValueChange: (Int) -> Unit,
     label: String
 ) {
+    var isEditing by remember { mutableStateOf(false) }
+    var editText by remember(value) { mutableStateOf(value.toString()) }
+    val focusRequester = remember { FocusRequester() }
+
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         TextButton(onClick = {
             if (value < range.last) onValueChange(value + 1)
@@ -217,11 +236,63 @@ private fun NumberPicker(
             Text("▲")
         }
 
-        Text(
-            text = value.toString().padStart(2, '0'),
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(horizontal = 8.dp)
-        )
+        if (isEditing) {
+            BasicTextField(
+                value = editText,
+                onValueChange = { newValue ->
+                    val filtered = newValue.filter { it.isDigit() }.take(2)
+                    editText = filtered
+                    filtered.toIntOrNull()?.let {
+                        if (it in range) onValueChange(it)
+                    }
+                },
+                modifier = Modifier
+                    .focusRequester(focusRequester)
+                    .onFocusChanged { if (!it.isFocused) isEditing = false }
+                    .padding(horizontal = 8.dp)
+                    .width(48.dp),
+                textStyle = MaterialTheme.typography.headlineMedium.copy(
+                    textAlign = TextAlign.Center
+                ),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { isEditing = false }
+                ),
+                singleLine = true
+            )
+            LaunchedEffect(Unit) {
+                focusRequester.requestFocus()
+            }
+        } else {
+            Text(
+                text = value.toString().padStart(2, '0'),
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier
+                    .pointerInput(Unit) {
+                        detectTapGestures(
+                            onTap = {
+                                isEditing = true
+                                editText = value.toString()
+                            }
+                        )
+                    }
+                    .pointerInput(Unit) {
+                        detectVerticalDragGestures(
+                            onVerticalDrag = { change, dragAmount ->
+                                change.consume()
+                                val delta = -(dragAmount / 15).roundToInt()
+                                if (delta != 0) {
+                                    onValueChange((value + delta).coerceIn(range.first, range.last))
+                                }
+                            }
+                        )
+                    }
+                    .padding(horizontal = 8.dp)
+            )
+        }
 
         TextButton(onClick = {
             if (value > range.first) onValueChange(value - 1)
