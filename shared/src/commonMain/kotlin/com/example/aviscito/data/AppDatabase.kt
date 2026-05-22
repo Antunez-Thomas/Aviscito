@@ -6,8 +6,8 @@ import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 
 @Database(
-    entities = [PillEntity::class],
-    version = 3,
+    entities = [PillEntity::class, PillHistoryEntry::class],
+    version = 4,
     exportSchema = false
 )
 @ConstructedBy(AppDatabaseConstructor::class)
