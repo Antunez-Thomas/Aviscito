@@ -108,8 +108,8 @@ fun PillListScreenContent(
    if (showDialog) {
       AddPillDialog(
          onDismiss = { onShowDialogChange(false) },
-         onSave = { name, frequency, time ->
-            onEvent(PillUIEvent.AddPill(name, frequency, time))
+         onSave = { name, daysOfWeek, time ->
+            onEvent(PillUIEvent.AddPill(name, daysOfWeek, time))
             onShowDialogChange(false)
          }
       )

@@ -9,8 +9,8 @@ class PillRepository(private val dao: PillDao) {
 
     suspend fun getPIllById(id: Long): PillEntity? = dao.getPillById(id)
 
-    suspend fun addPill(name: String, frequency: String, time: Int) {
-       dao.insert(PillEntity(name = name, frequency = frequency, time = time))
+    suspend fun addPill(name: String, daysOfWeek: Int, time: Int) {
+       dao.insert(PillEntity(name = name, daysOfWeek = daysOfWeek, time = time))
     }
     suspend fun markAsTaken(id: Long) {
         dao.markAsTaken(id, Clock.System.now().toEpochMilliseconds())

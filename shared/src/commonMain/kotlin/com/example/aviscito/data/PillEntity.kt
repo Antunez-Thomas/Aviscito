@@ -8,7 +8,7 @@ data class PillEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val name: String,
-    val frequency: String,
+    val daysOfWeek: Int,
     val time: Int,
     val takenAt: Long? = null
 )

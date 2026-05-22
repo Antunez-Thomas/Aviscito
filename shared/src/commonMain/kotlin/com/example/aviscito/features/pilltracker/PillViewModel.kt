@@ -17,16 +17,16 @@ class PillViewModel(private val repository: PillRepository): ViewModel() {
 
     fun handleEvent(event: PillUIEvent) {
         when (event) {
-            is PillUIEvent.AddPill -> addPill(event.name, event.frequency, event.time)
+            is PillUIEvent.AddPill -> addPill(event.name, event.daysOfWeek, event.time)
             is PillUIEvent.MarkAsTaken -> markAsTaken(event.id)
             is PillUIEvent.MarkAsNotTaken -> markAsNotTaken(event.id)
             is PillUIEvent.Refresh -> loadPills()
         }
     }
 
-    private fun addPill(name: String, frequency: String, time: Int) {
+    private fun addPill(name: String, daysOfWeek: Int, time: Int) {
         viewModelScope.launch {
-            repository.addPill(name, frequency, time)
+            repository.addPill(name, daysOfWeek, time)
         }
     }
 

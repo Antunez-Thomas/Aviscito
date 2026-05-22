@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -57,6 +59,7 @@ fun MedicationCard(
     time: String,
     status: MedicationStatus,
     icon: ImageVector,
+    onTake: () -> Unit = {},
     onMoreClick: () -> Unit = {}
 ) {
     OutlinedCard(
@@ -132,16 +135,30 @@ fun MedicationCard(
                     )
                 }
 
-                Surface(
-                    shape = MaterialTheme.shapes.small,
-                    color = status.containerColor
-                ) {
-                    Text(
-                        text = status.label,
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = status.contentColor
-                    )
+                if (status == MedicationStatuses.Upcoming) {
+                    Button(
+                        onClick = onTake,
+                        shape = MaterialTheme.shapes.small,
+                        contentPadding = ButtonDefaults.TextButtonContentPadding,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        )
+                    ) {
+                        Text("Take", style = MaterialTheme.typography.labelSmall)
+                    }
+                } else {
+                    Surface(
+                        shape = MaterialTheme.shapes.small,
+                        color = status.containerColor
+                    ) {
+                        Text(
+                            text = status.label,
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = status.contentColor
+                        )
+                    }
                 }
             }
         }

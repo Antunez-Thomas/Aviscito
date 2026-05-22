@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import aviscito.shared.generated.resources.Res
 import aviscito.shared.generated.resources.panda_logo
 import compose.icons.FeatherIcons
+import com.example.aviscito.data.daysOfWeekToText
 import com.example.aviscito.data.toDisplayTime
 import compose.icons.feathericons.Heart
 import compose.icons.feathericons.Moon
@@ -44,7 +45,8 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
-    val groupedPills = state.pendingPills.groupBy { pill ->
+    val todayPills = state.pendingPills.filter { (it.daysOfWeek and state.todayBit) != 0 }
+    val groupedPills = todayPills.groupBy { pill ->
         val hour = pill.time / 60
         when (hour) {
             in 5..11 -> "Morning"
@@ -150,10 +152,11 @@ fun HomeScreen(
                             items(pillsInCategory) { pill ->
                                 MedicationCard(
                                     name = pill.name,
-                                    dosage = pill.frequency,
+                                    dosage = daysOfWeekToText(pill.daysOfWeek),
                                     time = pill.time.toDisplayTime(),
                                     status = MedicationStatuses.Upcoming,
-                                    icon = FeatherIcons.Heart
+                                    icon = FeatherIcons.Heart,
+                                    onTake = { viewModel.markAsTaken(pill.id) }
                                 )
                                 Spacer(modifier = Modifier.height(12.dp))
                             }

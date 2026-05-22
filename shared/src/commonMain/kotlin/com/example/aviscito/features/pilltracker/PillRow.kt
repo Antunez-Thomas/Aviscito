@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import com.example.aviscito.data.PillEntity
+import com.example.aviscito.data.daysOfWeekToText
 import com.example.aviscito.data.toDisplayTime
 
 @Composable
@@ -40,7 +41,7 @@ fun PillRow(pill: PillEntity, onEvent: (PillUIEvent) -> Unit) {
                 .alpha(if (isTaken) 0.5f else 1f)
             ) {
                 Text(pill.name, style = MaterialTheme.typography.titleMedium)
-                Text("${pill.frequency} ${pill.time.toDisplayTime()}", style = MaterialTheme.typography.bodySmall)
+                Text("${daysOfWeekToText(pill.daysOfWeek)} ${pill.time.toDisplayTime()}", style = MaterialTheme.typography.bodySmall)
                 if (isTaken) {
                     Text("✓ Taken", color = MaterialTheme.colorScheme.primary)
                 }
