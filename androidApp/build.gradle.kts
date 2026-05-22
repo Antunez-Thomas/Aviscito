@@ -36,9 +36,25 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    signingConfigs {
+        create("release") {
+            val props = file("keystore.properties")
+                .readLines()
+                .filter { !it.startsWith("#") && "=" in it }
+                .associate { line ->
+                    val parts = line.split("=", limit = 2)
+                    parts[0].trim() to parts[1].trim()
+                }
+            storeFile = file(props.getOrDefault("storeFile", "release.keystore"))
+            storePassword = props.getOrDefault("storePassword", "")
+            keyAlias = props.getOrDefault("keyAlias", "aviscito")
+            keyPassword = props.getOrDefault("keyPassword", "")
+        }
+    }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
